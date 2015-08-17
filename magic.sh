@@ -1,9 +1,10 @@
 #!/bin/bash
 
 function falar () {
-	echo "[[ $* ]]"
-	#echo "Falando: $*"
-	#espeak -p 70 -s 120 -v brazil "$@" 2>/dev/null &
+    echo "[[ $* ]]"
+    osascript -e "display notification \"$*\" with title \"Magic\""
+    #echo "Falando: $*"
+    #espeak -p 70 -s 120 -v brazil "$@" 2>/dev/null &
 }
 
 echo '==========================' $$
@@ -15,11 +16,11 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 PIDFILE=".pid"
 PID2=`cat "$PIDFILE"`
 if [ -n "$PID2" ] && [ $(ps ax | grep "^ *$PID2 " | wc -l) -gt 0 ]; then
-	echo "$0 já rodando no pid $PID2. Abortando."
-	pstree -p "$PID2"
-	falar 'Processo pendurado. Fila de vídeos abortada.'
-	echo '=========================='
-	exit
+    echo "$0 já rodando no pid $PID2. Abortando."
+    pstree -p "$PID2"
+    falar 'Processo pendurado. Fila de vídeos abortada.'
+    echo '=========================='
+    exit
 fi
 echo $$ > "$PIDFILE"
 
@@ -29,6 +30,14 @@ echo $$ > "$PIDFILE"
 # DEDUPLICATE - o pull é meio fominha…
 sort -u queue.txt > queue.txt~ && mv queue.txt~ queue.txt
 
+# WIFI SENTINEL - somente baixar quando tiver na rede certa
+if [ "`uname`" == "Darwin" ]; then
+    ssid=$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk '/ SSID/ {print substr($0, index($0, $2))}')
+    if [ "$ssid" != "RaccoonNet" ]; then
+        exit
+    fi
+fi
+
 # SINK - essa é a parte que fica baixando tudo
 ATTEMPTS=10
 mkdir -p videos
@@ -36,14 +45,14 @@ cd videos
 ../refiltra.pl ../queue.txt
 while [ -s ../queue.txt ]
 do
-	../youtube-dl \
-		--write-description \
-		--no-progress \
-		-cita ../queue.txt 2>&1
-		#-f bestvideo+bestaudio \
-	../refiltra.pl ../queue.txt
-	ATTEMPTS=$(( $ATTEMPTS - 1 ))
-	if [ $ATTEMPTS -lt 1 ]; then break; fi
+    ../youtube-dl \
+        --write-description \
+        --no-progress \
+        -cita ../queue.txt 2>&1
+        #-f bestvideo+bestaudio \
+    ../refiltra.pl ../queue.txt
+    ATTEMPTS=$(( $ATTEMPTS - 1 ))
+    if [ $ATTEMPTS -lt 1 ]; then break; fi
 done
 
 VIDEOS=(*)

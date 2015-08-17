@@ -8,7 +8,7 @@ while (<>)
     if (/\bv=([a-zA-Z0-9_-]{11})(?![a-zA-Z0-9_-])/)
     {
         # look for video file
-        @found = glob "*-$1.{flv,mp4,video,webm,3gp}";
+        @found = glob "*-$1.{flv,mp4,video,webm,3gp,mkv}";
         print if $#found;
     }
 }

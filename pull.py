@@ -135,15 +135,15 @@ if __name__ == '__main__':
     append_to_queue(YoutubeChannelVideoFeed('UC3LqW4ijMoENQ2Wv17ZrFJA'))  # PBS Idea Channel
     append_to_queue(YoutubeChannelVideoFeed('UCUL-pmhmDcZDwsA4cX2HO5w'))  # PHD Comics
     append_to_queue(YoutubeChannelVideoFeed('UCEWHPFNilsT0IfQfutVzsag'))  # Porta dos Fundos
-    append_to_queue(YoutubeChannelVideoFeed('UC376n347Ob5Lwzq2WGzF1AA'))  # Jornalismo SBT
+    #append_to_queue(YoutubeChannelVideoFeed('UC376n347Ob5Lwzq2WGzF1AA'))  # Jornalismo SBT
     # append_to_queue(YoutubeChannelVideoFeed('democracynow'))
     append_to_queue(YoutubeChannelVideoFeed('UC3XTzVzaHQEd30rQbuvCtTQ'))  # Last Week Tonight
     append_to_queue(YoutubeChannelVideoFeed('UCIQMW4-IH91Ed4VPVbKMsaQ'))  # Ingress
     append_to_queue(YoutubeChannelVideoFeed('UC4ToGRJNQFPFAphVOEgg0ag'))  # IMATOONLINK
-    append_to_queue(YoutubeChannelVideoFeed('UCH-_hzb2ILSCo9ftVSnrCIQ'))  # yc Lewis
-    append_to_queue(YoutubeChannelVideoFeed('UCs4br3aZLU0sOEM-3n0-6xQ'))  # yc Duncan
-    append_to_queue(YoutubeChannelVideoFeed('UCpu8dLHavjMi1a5jgT9ycMA'))  # yc Sjin
-    append_to_queue(YoutubeChannelVideoFeed('UCUxoapwoGN9cKN5SPKGVh7A'))  # yc Kim
+    #append_to_queue(YoutubeChannelVideoFeed('UCH-_hzb2ILSCo9ftVSnrCIQ'))  # yc Lewis
+    #append_to_queue(YoutubeChannelVideoFeed('UCs4br3aZLU0sOEM-3n0-6xQ'))  # yc Duncan
+    #append_to_queue(YoutubeChannelVideoFeed('UCpu8dLHavjMi1a5jgT9ycMA'))  # yc Sjin
+    #append_to_queue(YoutubeChannelVideoFeed('UCUxoapwoGN9cKN5SPKGVh7A'))  # yc Kim
     # append_to_queue(YoutubeChannelVideoFeed('BdoubleO100')) mais mine via roo <3
     append_to_queue(YoutubeChannelVideoFeed('UCaYuAirih8a1Etht7KMuDaA'))  # heythatscool
     append_to_queue(YoutubeChannelVideoFeed('UCwf7GkXUML0Whgdt6lvMFTw'))  # Crowne Prince
