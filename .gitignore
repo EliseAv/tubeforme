@@ -1,4 +1,5 @@
 /*/
 known.py
-log
 queue.txt*
+.pid
+l.log
