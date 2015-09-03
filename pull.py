@@ -148,4 +148,4 @@ if __name__ == '__main__':
     append_to_queue(YoutubeChannelVideoFeed('UCaYuAirih8a1Etht7KMuDaA'))  # heythatscool
     append_to_queue(YoutubeChannelVideoFeed('UCwf7GkXUML0Whgdt6lvMFTw'))  # Crowne Prince
     append_to_queue(YoutubeChannelVideoFeed('UCuUV_ANYYmZvdcUxbe5nH1Q'))  # OkashiNaArtist Nat
-    # append_to_queue(YoutubeChannelVideoFeed('UCDIotuC7vNpQJKsZGT47LPQ'))  # BronyCAN
+    append_to_queue(YoutubeChannelVideoFeed('UCDIotuC7vNpQJKsZGT47LPQ'))  # BronyCAN
