@@ -11,7 +11,7 @@ It's not ready for other people to use yet, I don't think, but I feel I can even
 Roadmap
 -------
 
-# Python only. No Perl, no Bashscript.
-# Use a database already, geez! These text files are embarassing!
-# A GUI of some sort. Preferably one that's easy to install on Windows.
-# Full support for all sites that youtube-dl supports. They're hundreds!
+#. Python only. No Perl, no Bashscript.
+#. Use a database already, geez! These text files are embarassing!
+#. A GUI of some sort. Preferably one that's easy to install on Windows.
+#. Full support for all sites that youtube-dl supports. They're hundreds!
