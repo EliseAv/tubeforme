@@ -3,5 +3,7 @@ known.*
 queue.txt*
 .pid
 l.log
+log
 .idea
 *.yaml
+.localized
