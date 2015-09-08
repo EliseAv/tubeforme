@@ -4,3 +4,4 @@ queue.txt*
 .pid
 l.log
 .idea
+*.yaml

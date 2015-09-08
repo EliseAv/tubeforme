@@ -13,13 +13,15 @@
 # See the License for the specific language governing permissions and limitations under the License.
 #
 from json import dump, load
+from logging import getLogger
 from os.path import dirname
-from re import compile, DOTALL, IGNORECASE, MULTILINE
+from re import compile, MULTILINE
 from urllib.request import urlopen
 
 from feedparser import parse
 
 BASEPATH = dirname(__file__) + '/'
+log = getLogger('tubeforme.main')
 
 
 class VideoFeed:
@@ -47,15 +49,11 @@ class VideoFeed:
             print(sys.exc_info()[0])
 
 
-class EquestriaDailyVideoFeed(VideoFeed):
-    re_contents = compile("<div class='post-body .+<div class='post-footer'>", DOTALL | IGNORECASE)
+class BlogVideoFeed(VideoFeed):
     re_youtube = compile('\\b(v[=/]|embed/|youtu\.be/)([A-Za-z0-9_-]{11})(?![A-Za-z0-9_-])', MULTILINE)
 
-    def __init__(self, label=None):
-        uri = 'http://www.equestriadaily.com/feeds/posts/default'
-        if label is not None:
-            uri += '/-/' + label
-        VideoFeed.__init__(self, uri)
+    def __init__(self, url):
+        VideoFeed.__init__(self, url)
 
     def fetch_pages(self):
         for i in self.fetch():
@@ -65,12 +63,7 @@ class EquestriaDailyVideoFeed(VideoFeed):
                 response = urlopen(i.link)
                 html = response.read().decode(errors='replace')
                 print('Read %d kibibytes.' % (len(html) / 1024,))
-                match = self.re_contents.search(html)
-                if match:
-                    html = match.group(0)  # strip out header, footer, author, etc
-                    yield html
-                else:
-                    print('WARNING: No content.')
+                yield html
             except:
                 print('Unexpected error:', sys.exc_info())
             print()
@@ -139,8 +132,8 @@ if __name__ == '__main__':
         for ytvf in sys.argv[1:]:
             append_to_queue(YoutubeChannelVideoFeed(ytvf))
         sys.exit()
-    # append_to_queue(EquestriaDailyVideoFeed()) sigh...
-    append_to_queue(EquestriaDailyVideoFeed('Media'))
+    # append_to_queue(BlogVideoFeed('http://www.equestriadaily.com/feeds/posts/default')) sigh...
+    append_to_queue(BlogVideoFeed('http://www.equestriadaily.com/feeds/posts/default/-/Media'))
     append_to_queue(YoutubeChannelVideoFeed('UCAuUUnT6oDeKwE6v1NGQxug'))  # TED
     append_to_queue(YoutubeChannelVideoFeed('UCKRw8GAAtm27q4R3Q0kst_g'))  # RAP News
     append_to_queue(YoutubeChannelVideoFeed('UCyNG6pja1HRuZlMDR9dTI4w'))  # Ultra Fast Pony

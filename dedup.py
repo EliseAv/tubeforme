@@ -86,7 +86,8 @@ class Deduplicator:
 
 
 if __name__ == '__main__':
-    log.addHandler(StreamHandler())
-    log.level = DEBUG
+    toplog = getLogger('tubeforme')
+    toplog.addHandler(StreamHandler())
+    toplog.level = DEBUG
     ded = Deduplicator(dirname(__file__), 'videos', 'queue.txt')
     ded.main('save' not in argv)
