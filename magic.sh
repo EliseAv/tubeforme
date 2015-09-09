@@ -40,7 +40,7 @@ echo $$ > "$PIDFILE"
 ./pull.py
 
 # DEDUPLICATE - o pull é meio fominha…
-sort -u queue.txt > queue.txt~ && mv queue.txt~ queue.txt
+./dedup.py save
 
 # WIFI SENTINEL - somente baixar quando tiver na rede certa
 if [ "`uname`" == "Darwin" ]; then
@@ -54,7 +54,6 @@ fi
 ATTEMPTS=10
 mkdir -p videos
 cd videos
-../refiltra.pl ../queue.txt
 while [ -s ../queue.txt ]
 do
     ../youtube-dl \
@@ -62,7 +61,7 @@ do
         --no-progress \
         -cita ../queue.txt 2>&1
         #-f bestvideo+bestaudio \
-    ../refiltra.pl ../queue.txt
+    ../dedup.py save
     ATTEMPTS=$(( $ATTEMPTS - 1 ))
     if [ $ATTEMPTS -lt 1 ]; then break; fi
 done
