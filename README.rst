@@ -8,6 +8,13 @@ my TV. It's something I turn on to watch the latest and newest, I enjoy it, and 
 
 It's not ready for other people to use yet, I don't think, but I feel I can eventually get there.
 
+Requirements
+------------
+
+* tendo
+* PyYAML
+* youtube-dl
+
 Roadmap
 -------
 

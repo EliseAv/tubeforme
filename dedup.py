@@ -14,7 +14,7 @@
 #
 from collections import defaultdict
 from logging import getLogger, StreamHandler, DEBUG
-from os import listdir, replace
+from os import listdir, rename
 from os.path import splitext, join, dirname
 from re import compile
 from sys import argv
@@ -80,7 +80,7 @@ class Deduplicator:
                 log.debug(i.strip())
         elif discarded_count > 0:
             backup = self._queuepath + '~'
-            replace(self._queuepath, backup)
+            rename(self._queuepath, backup)
             with open(self._queuepath, 'w') as f:
                 f.writelines(keep_those)
 

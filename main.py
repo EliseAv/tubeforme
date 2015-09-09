@@ -63,7 +63,8 @@ def dowload_found_stuff():
     with YoutubeDL(ydl_opts) as ydl:
         for link in open(join(BASEDIR, 'queue.txt')):
             space = get_free_space_mb(BASEDIR)
-            if space > 500:
+            link = link.strip()
+            if link and space > 500:
                 ydl.download([link])
             else:
                 log.fatal("Disk space low, exiting! %d MB free.", space)
