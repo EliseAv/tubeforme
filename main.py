@@ -23,7 +23,7 @@ from yaml import load
 
 from pull import YoutubeChannelVideoFeed, BlogVideoFeed, append_to_queue
 from dedup import Deduplicator
-from youtube_dl import YoutubeDL
+from zipimport import zipimporter
 
 BASEDIR = dirname(__file__)
 log = getLogger('tubeforme.main')
@@ -60,7 +60,8 @@ def dowload_found_stuff():
         'noprogress': True,
         'writesubtitles': True,
     }
-    with YoutubeDL(ydl_opts) as ydl:
+    ydl = zipimporter('youtube-dl').load_module('youtube_dl')
+    with ydl.YoutubeDL(ydl_opts) as ydl:
         for link in open(join(BASEDIR, 'queue.txt')):
             space = get_free_space_mb(BASEDIR)
             link = link.strip()
