@@ -17,6 +17,7 @@ from logging import getLogger, StreamHandler, DEBUG
 from os.path import dirname, join
 from platform import system
 from os import statvfs
+from sys import argv
 
 from tendo.singleton import SingleInstance
 from yaml import load
@@ -33,7 +34,8 @@ def main():
     sentinel = SingleInstance()
     try:
         log.info('Starting. %d MB free.', get_free_space_mb(BASEDIR))
-        find_new_stuff()
+        if 'skip' not in argv:
+            find_new_stuff()
         deduplicate()
         dowload_found_stuff()
     finally:
@@ -59,6 +61,7 @@ def dowload_found_stuff():
         'writedescription': True,
         'noprogress': True,
         'writesubtitles': True,
+        'output': join(BASEDIR, 'videos', '%(title)s %(uploader)s-%(id)s.%(ext)s'),
     }
     ydl = zipimporter('youtube-dl').load_module('youtube_dl')
     with ydl.YoutubeDL(ydl_opts) as ydl:
