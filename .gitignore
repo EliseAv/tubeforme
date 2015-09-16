@@ -7,3 +7,5 @@ log
 .idea
 *.yaml
 .localized
+youtube-dl*
+desktop.ini
