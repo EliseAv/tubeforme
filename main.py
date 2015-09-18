@@ -12,19 +12,18 @@
 # distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 #
-import ctypes
 from logging import getLogger, StreamHandler, DEBUG
 from os.path import dirname, join
-from platform import system
 from os import statvfs
+from platform import system
 from sys import argv
+from zipimport import zipimporter
 
 from tendo.singleton import SingleInstance
 from yaml import load
 
-from pull import YoutubeChannelVideoFeed, BlogVideoFeed, append_to_queue
-from dedup import Deduplicator
-from zipimport import zipimporter
+from .pull import YoutubeChannelVideoFeed, BlogVideoFeed, append_to_queue
+from .dedup import Deduplicator
 
 BASEDIR = dirname(__file__)
 log = getLogger('tubeforme.main')
@@ -74,16 +73,6 @@ def dowload_found_stuff():
                 log.fatal("Disk space low, exiting! %d MB free.", space)
                 exit(1)
 
-
-def get_free_space_mb(pathname):
-    """Return folder/drive free space (in megabytes)."""
-    if system() == 'Windows':
-        free_bytes = ctypes.c_ulonglong(0)
-        ctypes.windll.kernel32.GetDiskFreeSpaceExW(ctypes.c_wchar_p(pathname), None, None, ctypes.pointer(free_bytes))
-        return free_bytes.value / 1024 / 1024
-    else:
-        st = statvfs(pathname)
-        return st.f_bavail * st.f_frsize / 1024 / 1024
 
 
 if __name__ == '__main__':

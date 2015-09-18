@@ -1,11 +1,6 @@
-/*/
 known.*
 queue.txt*
-.pid
-l.log
-log
+run.log
 .idea
 *.yaml
-.localized
-youtube-dl*
-desktop.ini
+/platform/youtube-dl*
