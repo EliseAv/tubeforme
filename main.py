@@ -14,16 +14,14 @@
 #
 from logging import getLogger, StreamHandler, DEBUG
 from os.path import dirname, join
-from os import statvfs
-from platform import system
 from sys import argv
-from zipimport import zipimporter
 
 from tendo.singleton import SingleInstance
 from yaml import load
 
-from .pull import YoutubeChannelVideoFeed, BlogVideoFeed, append_to_queue
 from .dedup import Deduplicator
+from .pull import YoutubeChannelVideoFeed, BlogVideoFeed, append_to_queue
+from .platform import YoutubeDL, get_free_space_mb
 
 BASEDIR = dirname(__file__)
 log = getLogger('tubeforme.main')
@@ -62,8 +60,7 @@ def dowload_found_stuff():
         'writesubtitles': True,
         'output': join(BASEDIR, 'videos', '%(title)s %(uploader)s-%(id)s.%(ext)s'),
     }
-    ydl = zipimporter('youtube-dl').load_module('youtube_dl')
-    with ydl.YoutubeDL(ydl_opts) as ydl:
+    with YoutubeDL(ydl_opts) as ydl:
         for link in open(join(BASEDIR, 'queue.txt')):
             space = get_free_space_mb(BASEDIR)
             link = link.strip()
@@ -72,7 +69,6 @@ def dowload_found_stuff():
             else:
                 log.fatal("Disk space low, exiting! %d MB free.", space)
                 exit(1)
-
 
 
 if __name__ == '__main__':

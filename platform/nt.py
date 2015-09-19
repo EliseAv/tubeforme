@@ -2,7 +2,8 @@
 from zipimport import zipimporter
 import ctypes
 
-# 1. check whether we are running python 2 and not python 3. the distribution is py2 only.
+# TODO: check if we are running python 2 and not python 3. the youtube-dl.exe is py2 only.
+# TODO: check for updates to youtube-dl
 
 ydl = zipimporter('youtube-dl.exe').load_module('youtube_dl')
 YoutubeDL = ydl.YoutubeDL

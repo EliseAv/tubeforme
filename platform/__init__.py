@@ -13,6 +13,6 @@
 #
 from os import name
 if name == 'nt':  # Windows
-    from .nt import YoutubeDL, list_extractors
+    from .nt import YoutubeDL, list_extractors, get_free_space_mb
 elif name == 'posix':  # Linux
-    from .posix import *
+    from .posix import get_free_space_mb
