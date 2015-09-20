@@ -11,14 +11,16 @@
 # distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 #
-from __future__ import absolute_import, unicode_literals
-from logging import getLogger
-from os import name
+from logging import getLogger, DEBUG, StreamHandler
+from os.path import dirname, abspath, basename
+from sys import path
 
-if name == 'nt':  # Windows
-    from .nt import YoutubeDL, list_extractors, get_free_space_mb
-elif name == 'posix':  # Linux and OSX
-    from .posix import YoutubeDL, list_extractors, get_free_space_mb
-else:
-    getLogger(__name__).fatal('Unknown os! %s', name)
-    exit(1)
+if __name__ == '__main__':
+    log = getLogger()
+    log.setLevel(DEBUG)
+    log.addHandler(StreamHandler())
+    me = abspath(__file__)
+    myfolder = dirname(me)
+    mypackage = basename(myfolder)
+    path.insert(0, dirname(myfolder))
+    __import__(mypackage + '.main').main()
