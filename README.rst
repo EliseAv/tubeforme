@@ -13,12 +13,11 @@ Requirements
 
 * tendo
 * PyYAML
-* youtube-dl
+* GitPython
 
 Roadmap
 -------
 
-#. Python only. No Perl, no Bashscript.
 #. Use a database already, geez! These text files are embarassing!
 #. A GUI of some sort. Preferably one that's easy to install on Windows.
 #. Full support for all sites that youtube-dl supports. They're hundreds!
