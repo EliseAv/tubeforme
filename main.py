@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and limitations under the License.
 #
 from logging import getLogger, StreamHandler, DEBUG
-from os.path import dirname, join
+from os import getcwd, mkdir
+from os.path import join, exists
 from sys import argv
 
 from tendo.singleton import SingleInstance
@@ -22,7 +23,7 @@ from .dedup import Deduplicator
 from .pull import YoutubeChannelVideoFeed, BlogVideoFeed, append_to_queue
 from .platform import YoutubeDL, get_free_space_mb
 
-BASEDIR = dirname(__file__)
+BASEDIR = getcwd()
 log = getLogger('tubeforme.main')
 
 
@@ -31,9 +32,20 @@ def main():
     try:
         log.info('Starting. %d MB free.', get_free_space_mb(BASEDIR))
         if 'skip' not in argv:
-            find_new_stuff()
-        deduplicate()
-        dowload_found_stuff()
+            try:
+                find_new_stuff()
+            except FileNotFoundError:
+                pass
+
+        try:
+            deduplicate()
+        except FileNotFoundError:
+            pass
+
+        try:
+            download_found_stuff()
+        except FileNotFoundError:
+            pass
     finally:
         del sentinel
 
@@ -52,12 +64,15 @@ def deduplicate():
     ded.main()
 
 
-def dowload_found_stuff():
+def download_found_stuff():
+    download_path = join(BASEDIR, 'videos')
+    if not exists(download_path):
+        mkdir(download_path)
     ydl_opts = {
         'writedescription': True,
         'noprogress': True,
         'writesubtitles': True,
-        'output': join(BASEDIR, 'videos', '%(title)s %(uploader)s-%(id)s.%(ext)s'),
+        'outtmpl': join(download_path, '%(title)s %(uploader)s-%(id)s.%(ext)s'),
     }
     with YoutubeDL(ydl_opts) as ydl:
         for link in open(join(BASEDIR, 'queue.txt')):
