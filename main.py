@@ -46,6 +46,11 @@ def main():
             download_found_stuff()
         except FileNotFoundError:
             pass
+
+        try:
+            deduplicate()
+        except FileNotFoundError:
+            pass
     finally:
         del sentinel
 
