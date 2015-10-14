@@ -14,22 +14,6 @@
 from __future__ import absolute_import, unicode_literals
 from ctypes import c_ulonglong, pointer, c_wchar_p
 from ctypes.windll.kernel32 import GetDiskFreeSpaceExW
-from logging import getLogger
-from os.path import dirname, join
-from sys import version_info, version
-
-from .common import load_ydl
-
-log = getLogger(__name__)
-basepath = dirname(__file__)
-zipfile = join(basepath, 'youtube-dl.exe')
-
-if version_info[0] != 2:
-    log.fatal(version)
-    log.fatal('But youtube-dl.exe is currently only compatible with Python 2! :(')
-    exit(1)
-
-YoutubeDL, list_extractors = load_ydl(zipfile)
 
 
 def get_free_space_mb(pathname):

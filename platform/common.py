@@ -12,33 +12,33 @@
 # See the License for the specific language governing permissions and limitations under the License.
 #
 from __future__ import absolute_import, unicode_literals
-from datetime import datetime, timedelta
 from logging import getLogger
-from os.path import getmtime, exists, basename
-from subprocess import call
-from zipimport import zipimporter
+from os.path import exists, dirname, join
 
-from wget import download
+from git import Repo
 
 log = getLogger(__name__)
+repository_url = 'https://github.com/rg3/youtube-dl.git'
 
 
-def load_ydl(command):
+def ensure_ydl():
+    base_path = dirname(__file__)
+    repo_path = join(base_path, 'ydl')
+
     # Check if it exists
-    if not exists(command):
-        url = 'https://yt-dl.org/downloads/latest/' + basename(command)
-        log.error('%s not found! Downloading from: %s', command, url)
-        download(url, command)
+    if not exists(repo_path):
+        log.warn('Youtube-dl not found! Dowloading from %s', repository_url)
+        Repo.clone_from(repository_url, repo_path)
 
     # Check if it's old
-    if datetime.now() - datetime.fromtimestamp(getmtime(command)) > timedelta(days=1):
-        log.info('%s is old. Updating.', command)
-        call([command, '-U'])
-        with open(command, 'ab'):
-            # just touch the file to update its mtime in case it did not update
-            pass
+    else:
+        repo = Repo(repo_path)
+        remote = repo.remote()
+        log.info('Updating from %s', remote.name)
+        remote.pull()
 
-    # Load it and expose it.
-    ydl = zipimporter(command).load_module('youtube_dl')
-    log.debug('youtube-dl loaded.')
-    return ydl.YoutubeDL, ydl.list_extractors
+
+ensure_ydl()
+from .ydl import youtube_dl
+
+youtube_dl.main('--version')

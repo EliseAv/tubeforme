@@ -12,17 +12,7 @@
 # See the License for the specific language governing permissions and limitations under the License.
 #
 from __future__ import absolute_import, unicode_literals
-from logging import getLogger
 from os import statvfs
-from os.path import dirname, join
-
-from .common import load_ydl
-
-log = getLogger(__name__)
-basepath = dirname(__file__)
-zipfile = join(basepath, 'youtube-dl')
-
-YoutubeDL, list_extractors = load_ydl(zipfile)
 
 
 def get_free_space_mb(pathname):

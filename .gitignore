@@ -3,7 +3,7 @@ known.*
 queue.txt*
 .idea
 *.yaml
-/platform/youtube-dl*
+/platform/ydl
 
 ### Python template
 # Byte-compiled / optimized / DLL files

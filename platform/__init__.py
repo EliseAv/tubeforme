@@ -16,9 +16,11 @@ from logging import getLogger
 from os import name
 
 if name == 'nt':  # Windows
-    from .nt import YoutubeDL, list_extractors, get_free_space_mb
+    from .nt import get_free_space_mb
 elif name == 'posix':  # Linux and OSX
-    from .posix import YoutubeDL, list_extractors, get_free_space_mb
+    from .posix import get_free_space_mb
 else:
     getLogger(__name__).fatal('Unknown os! %s', name)
     exit(1)
+
+from .common import youtube_dl
