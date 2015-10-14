@@ -20,7 +20,7 @@ from tendo.singleton import SingleInstance
 from yaml import load
 
 from .dedup import Deduplicator
-from .pull import YoutubeChannelVideoFeed, BlogVideoFeed, append_to_queue
+from .pull import YoutubeChannelVideoFeed, BlogVideoFeed
 from .platform import YoutubeDL, get_free_space_mb
 
 BASEDIR = getcwd()
@@ -51,12 +51,13 @@ def main():
 
 
 def find_new_stuff():
-    subscriptions = open('subscriptions.yaml', 'r')
-    settings = load(subscriptions)
+    queue_path = join(BASEDIR, 'queue.txt')
+    known_path = join(BASEDIR, 'known.json')
+    settings = load(open(join(BASEDIR, 'subscriptions.yaml'), 'r'))
     for channel in settings['youtube_channels']:
-        append_to_queue(YoutubeChannelVideoFeed(channel))
+        YoutubeChannelVideoFeed(known_path, channel).append_to_queue(queue_path)
     for blog in settings['blogs']:
-        append_to_queue(BlogVideoFeed(blog))
+        BlogVideoFeed(known_path, blog).append_to_queue(queue_path)
 
 
 def deduplicate():
@@ -71,7 +72,7 @@ def download_found_stuff():
     ydl_opts = {
         'writedescription': True,
         'noprogress': True,
-        'writesubtitles': True,
+        # 'writesubtitles': True,
         'outtmpl': join(download_path, '%(title)s %(uploader)s-%(id)s.%(ext)s'),
     }
     with YoutubeDL(ydl_opts) as ydl:

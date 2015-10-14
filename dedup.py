@@ -20,7 +20,7 @@ from sys import argv
 
 from .platform import list_extractors
 
-log = getLogger('tubeforme.dedup')
+log = getLogger(__name__)
 
 
 class Deduplicator:

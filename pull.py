@@ -13,20 +13,18 @@
 #
 from json import dump, load
 from logging import getLogger
-from os.path import dirname
 from re import compile, MULTILINE
 from urllib.request import urlopen
 
 from feedparser import parse
 
-BASEPATH = dirname(__file__) + '/'
-log = getLogger('tubeforme.main')
+log = getLogger(__name__)
 
 
 class VideoFeed:
-    def __init__(self, url):
+    def __init__(self, known_path, url):
         self.url = url
-        self.read_list = ReadList(url)
+        self.read_list = ReadList(known_path, url)
 
     def is_new(self, item):
         return self.read_list.is_new(item.id)
@@ -47,12 +45,19 @@ class VideoFeed:
             print('Unexpected error with', self.url)
             print(sys.exc_info()[0])
 
+    def fetch_video_codes(self):
+        raise NotImplementedError
+
+    def append_to_queue(self, queue_path):
+        codes = self.fetch_video_codes()
+        links = ['\nhttp://www.youtube.com/watch?v=' + v for v in codes]
+        f = open(queue_path, 'a')
+        f.writelines(links)
+        f.close()
+
 
 class BlogVideoFeed(VideoFeed):
     re_youtube = compile('\\b(v[=/]|embed/|youtu\.be/)([A-Za-z0-9_-]{11})(?![A-Za-z0-9_-])', MULTILINE)
-
-    def __init__(self, url):
-        VideoFeed.__init__(self, url)
 
     def fetch_pages(self):
         for i in self.fetch():
@@ -76,8 +81,8 @@ class BlogVideoFeed(VideoFeed):
 
 
 class YoutubeChannelVideoFeed(VideoFeed):
-    def __init__(self, channel):
-        VideoFeed.__init__(self, 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channel)
+    def __init__(self, known_path, channel):
+        VideoFeed.__init__(self, known_path, 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channel)
 
     def fetch_video_codes(self):
         for item in self.fetch():
@@ -87,14 +92,13 @@ class YoutubeChannelVideoFeed(VideoFeed):
 
 
 class ReadList:  # this class is not thread-safe at all!
-    filename = BASEPATH + 'known.json'
     lists = None
 
-    def __init__(self, key):
+    def __init__(self, filename, key):
         # static initialization
         if ReadList.lists is None:
             try:
-                f = open(ReadList.filename)
+                f = open(filename)
                 ReadList.lists = load(f)
                 f.close()
             except:
@@ -103,6 +107,7 @@ class ReadList:  # this class is not thread-safe at all!
         self.key = key
         self.known = ReadList.lists.get(key, [])
         self.new = []
+        self.filename = filename
 
     def is_new(self, item):
         self.new.append(item)
@@ -111,17 +116,9 @@ class ReadList:  # this class is not thread-safe at all!
     def save(self):
         ReadList.lists[self.key] = self.known = self.new
         self.new = []
-        f = open(ReadList.filename, 'w')
+        f = open(self.filename, 'w')
         dump(ReadList.lists, f, indent=4, sort_keys=True)
         f.close()
-
-
-def append_to_queue(video_feed):
-    codes = video_feed.fetch_video_codes()
-    links = ['\nhttp://www.youtube.com/watch?v=' + v for v in codes]
-    f = open(BASEPATH + 'queue.txt', 'a')
-    f.writelines(links)
-    f.close()
 
 
 if __name__ == '__main__':
