@@ -15,6 +15,8 @@ from logging import getLogger, DEBUG, StreamHandler
 from os.path import dirname, abspath, basename
 from sys import path
 
+from .main import main
+
 if __name__ == '__main__':
     log = getLogger()
     log.setLevel(DEBUG)
@@ -23,4 +25,4 @@ if __name__ == '__main__':
     myfolder = dirname(me)
     mypackage = basename(myfolder)
     path.insert(0, dirname(myfolder))
-    __import__(mypackage + '.main').main()
+    main()

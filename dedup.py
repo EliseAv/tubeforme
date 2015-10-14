@@ -18,7 +18,7 @@ from os.path import splitext, join, dirname
 from re import compile
 from sys import argv
 
-from youtube_dl import list_extractors
+from .platform import list_extractors
 
 log = getLogger('tubeforme.dedup')
 

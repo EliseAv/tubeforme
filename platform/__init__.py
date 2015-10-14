@@ -15,6 +15,8 @@ from __future__ import absolute_import, unicode_literals
 from logging import getLogger
 from os import name
 
+from .common import ensure_ydl
+
 if name == 'nt':  # Windows
     from .nt import get_free_space_mb
 elif name == 'posix':  # Linux and OSX
@@ -23,4 +25,5 @@ else:
     getLogger(__name__).fatal('Unknown os! %s', name)
     exit(1)
 
-from .common import youtube_dl
+ensure_ydl()
+from .ydl.youtube_dl import main, YoutubeDL, gen_extractors, list_extractors

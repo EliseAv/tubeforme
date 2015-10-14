@@ -32,13 +32,6 @@ def ensure_ydl():
 
     # Check if it's old
     else:
-        repo = Repo(repo_path)
-        remote = repo.remote()
+        remote = Repo(repo_path).remote()
         log.info('Updating from %s', remote.name)
         remote.pull()
-
-
-ensure_ydl()
-from .ydl import youtube_dl
-
-youtube_dl.main('--version')
