@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and limitations under the License.
 #
 from __future__ import absolute_import, unicode_literals
-from ctypes import c_ulonglong, pointer, c_wchar_p
-from ctypes.windll.kernel32 import GetDiskFreeSpaceExW
+from ctypes import c_ulonglong, pointer, c_wchar_p, windll
 
 
 def get_free_space_mb(pathname):
     """Return folder/drive free space (in megabytes)."""
     free_bytes = c_ulonglong(0)
-    GetDiskFreeSpaceExW(c_wchar_p(pathname), None, None, pointer(free_bytes))
+    windll.kernel32.GetDiskFreeSpaceExW(c_wchar_p(pathname), None, None, pointer(free_bytes))
     return free_bytes.value / 1024 / 1024
