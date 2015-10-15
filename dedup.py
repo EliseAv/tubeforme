@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and limitations under the License.
 #
 from collections import defaultdict
-from logging import getLogger, StreamHandler, DEBUG
+from logging import getLogger
 from os import listdir, rename
-from os.path import splitext, join, dirname
+from os.path import splitext, join
 from re import compile
-from sys import argv
 
 from .platform import list_extractors
 
@@ -82,11 +81,3 @@ class Deduplicator:
             rename(self._queuepath, backup)
             with open(self._queuepath, 'w') as f:
                 f.writelines(keep_those)
-
-
-if __name__ == '__main__':
-    toplog = getLogger('tubeforme')
-    toplog.addHandler(StreamHandler())
-    toplog.level = DEBUG
-    ded = Deduplicator(dirname(__file__), 'videos', 'queue.txt')
-    ded.main('save' not in argv)

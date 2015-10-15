@@ -119,34 +119,3 @@ class ReadList:  # this class is not thread-safe at all!
         f = open(self.filename, 'w')
         dump(ReadList.lists, f, indent=4, sort_keys=True)
         f.close()
-
-
-if __name__ == '__main__':
-    import sys
-
-    if len(sys.argv) > 1:
-        for ytvf in sys.argv[1:]:
-            append_to_queue(YoutubeChannelVideoFeed(ytvf))
-        sys.exit()
-    # append_to_queue(BlogVideoFeed('http://www.equestriadaily.com/feeds/posts/default')) sigh...
-    append_to_queue(BlogVideoFeed('http://www.equestriadaily.com/feeds/posts/default/-/Media'))
-    append_to_queue(YoutubeChannelVideoFeed('UCAuUUnT6oDeKwE6v1NGQxug'))  # TED
-    append_to_queue(YoutubeChannelVideoFeed('UCKRw8GAAtm27q4R3Q0kst_g'))  # RAP News
-    append_to_queue(YoutubeChannelVideoFeed('UCyNG6pja1HRuZlMDR9dTI4w'))  # Ultra Fast Pony
-    append_to_queue(YoutubeChannelVideoFeed('UCsaypaIo57-x7AfxuPmW2Ow'))  # DasDeer
-    append_to_queue(YoutubeChannelVideoFeed('UC3LqW4ijMoENQ2Wv17ZrFJA'))  # PBS Idea Channel
-    append_to_queue(YoutubeChannelVideoFeed('UCUL-pmhmDcZDwsA4cX2HO5w'))  # PHD Comics
-    append_to_queue(YoutubeChannelVideoFeed('UCEWHPFNilsT0IfQfutVzsag'))  # Porta dos Fundos
-    # append_to_queue(YoutubeChannelVideoFeed('UC376n347Ob5Lwzq2WGzF1AA'))  # Jornalismo SBT
-    append_to_queue(YoutubeChannelVideoFeed('UCzuqE7-t13O4NIDYJfakrhw'))  # Democrary Now
-    append_to_queue(YoutubeChannelVideoFeed('UC3XTzVzaHQEd30rQbuvCtTQ'))  # Last Week Tonight
-    append_to_queue(YoutubeChannelVideoFeed('UCIQMW4-IH91Ed4VPVbKMsaQ'))  # Ingress
-    append_to_queue(YoutubeChannelVideoFeed('UC4ToGRJNQFPFAphVOEgg0ag'))  # IMATOONLINK
-    # append_to_queue(YoutubeChannelVideoFeed('UCH-_hzb2ILSCo9ftVSnrCIQ'))  # yc Lewis
-    # append_to_queue(YoutubeChannelVideoFeed('UCs4br3aZLU0sOEM-3n0-6xQ'))  # yc Duncan
-    # append_to_queue(YoutubeChannelVideoFeed('UCpu8dLHavjMi1a5jgT9ycMA'))  # yc Sjin
-    # append_to_queue(YoutubeChannelVideoFeed('UCUxoapwoGN9cKN5SPKGVh7A'))  # yc Kim
-    append_to_queue(YoutubeChannelVideoFeed('UCaYuAirih8a1Etht7KMuDaA'))  # heythatscool
-    append_to_queue(YoutubeChannelVideoFeed('UCwf7GkXUML0Whgdt6lvMFTw'))  # Crowne Prince
-    append_to_queue(YoutubeChannelVideoFeed('UCuUV_ANYYmZvdcUxbe5nH1Q'))  # OkashiNaArtist Nat
-    append_to_queue(YoutubeChannelVideoFeed('UCDIotuC7vNpQJKsZGT47LPQ'))  # BronyCAN
