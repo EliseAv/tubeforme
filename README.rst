@@ -18,8 +18,8 @@ I recommend your installation path (henceforth called ``$DESTINATION``) to be yo
 For OS X users that's ``$HOME/Movies``, for Windows users that's ``%USERPROFILE%\Videos``.
 
 #. Install Python 3.
-#. Run ``pip3 install -r requirements.txt`` to install required Python libraries.
 #. Clone this Git repository into ``$DESTINATION/tubeforme``
+#. Run ``pip3 install -r requirements.txt`` to install `required Python libraries`_.
 #. Create the subscriptions file (see below) in ``$DESTINATION/subscriptions.yaml``
 #. Add to your crontab something like ``cd $DESTINATION; python3 -m tubeforme``
 #. Your videos will end up in ``$DESTINATION/videos``
@@ -52,5 +52,6 @@ Roadmap
 #. A GUI of some sort. Preferably one that's easy to install on Windows.
 #. Full support for all sites that youtube-dl_ supports. They're hundreds!
 
+.. _required Python libraries: requirements.txt
 .. _YAML: http://yaml.org/
 .. _youtube-dl: https://github.com/rg3/youtube-dl
