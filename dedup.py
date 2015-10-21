@@ -13,8 +13,8 @@
 #
 from collections import defaultdict
 from logging import getLogger
-from os import listdir, rename
-from os.path import splitext, join
+from os import listdir, rename, unlink
+from os.path import exists, join, splitext
 from re import compile
 
 from .platform import list_extractors
@@ -78,6 +78,8 @@ class Deduplicator:
                 log.debug(i.strip())
         elif discarded_count > 0:
             backup = self._queuepath + '~'
+            if exists(backup):
+                unlink(backup)
             rename(self._queuepath, backup)
             with open(self._queuepath, 'w') as f:
                 f.writelines(keep_those)
