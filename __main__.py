@@ -78,6 +78,7 @@ def download_found_stuff():
         'writedescription': True,
         'noprogress': True,
         # 'writesubtitles': True,
+        'ignoreerrors': True,
         'outtmpl': join(download_path, '%(title)s %(uploader)s-%(id)s.%(ext)s'),
     }
     with YoutubeDL(ydl_opts) as ydl:
