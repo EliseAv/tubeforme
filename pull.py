@@ -36,14 +36,13 @@ class VideoFeed:
             if len(items) == 0:
                 raise Exception('Empty feed. Is site down?')
             new_items = list(filter(self.is_new, items))
-            print('Feed contains %d items, %d are new.' % (len(items), len(new_items)))
+            log.info('Feed contains %d items, %d are new.' % (len(items), len(new_items)))
             # iterate first, then save new read list
             for i in new_items:
                 yield i
             self.read_list.save()
         except:
-            print('Unexpected error with', self.url)
-            print(sys.exc_info()[0])
+            log.exception('Unexpected error with', self.url, exc_info=True)
 
     def fetch_video_codes(self):
         raise NotImplementedError
@@ -62,21 +61,21 @@ class BlogVideoFeed(VideoFeed):
     def fetch_pages(self):
         for i in self.fetch():
             try:
-                print(i.id, i.link)
-                print('Fetching ' + i.title)
+                log.debug('%s, %s', i.id, i.link)
+                log.info('Fetching %s', i.title)
                 response = urlopen(i.link)
                 html = response.read().decode(errors='replace')
-                print('Read %d kibibytes.' % (len(html) / 1024,))
+                log.debug('Read %d kibibytes.' % (len(html) / 1024,))
                 yield html
             except:
-                print('Unexpected error:', sys.exc_info())
-            print()
+                log.exception('Failed to fetch i.id', exc_info=True)
+            log.debug('')
 
     def fetch_video_codes(self):
         for html in self.fetch_pages():
             for match in self.re_youtube.finditer(html):
                 video = match.group(2)
-                print('Found video:', video)
+                log.debug('Found video: %s', video)
                 yield video
 
 
@@ -87,7 +86,7 @@ class YoutubeChannelVideoFeed(VideoFeed):
     def fetch_video_codes(self):
         for item in self.fetch():
             video = item.id[-11:]  # sometimes it can be this easy :)
-            print('Found video: http://youtu.be/' + video)
+            log.info('Found video: http://youtu.be/%s', video)
             yield video
 
 
