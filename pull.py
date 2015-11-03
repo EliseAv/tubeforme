@@ -68,7 +68,7 @@ class BlogVideoFeed(VideoFeed):
                 log.debug('Read %d kibibytes.' % (len(html) / 1024,))
                 yield html
             except:
-                log.exception('Failed to fetch i.id', exc_info=True)
+                log.exception('Failed to fetch %s', i.id, exc_info=True)
             log.debug('')
 
     def fetch_video_codes(self):
