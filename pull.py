@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2015, Ekevoo.com.
+# Copyright 2008-2017, Ekevoo.com.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in
 # compliance with the License. You may obtain a copy of the License at
@@ -14,7 +14,7 @@
 from json import dump, load
 from logging import getLogger
 from re import compile, MULTILINE
-from urllib.request import urlopen
+from requests import get
 
 from feedparser import parse
 
@@ -63,8 +63,8 @@ class BlogVideoFeed(VideoFeed):
             try:
                 log.debug('%s, %s', i.id, i.link)
                 log.info('Fetching %s', i.title)
-                response = urlopen(i.link)
-                html = response.read().decode(errors='replace')
+                response = get(i.link)
+                html = response.text
                 log.debug('Read %d kibibytes.' % (len(html) / 1024,))
                 yield html
             except:

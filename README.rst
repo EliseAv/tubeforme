@@ -4,7 +4,7 @@
 tubeforme
 =========
 
-Around 2008, I was bored of visiting a blog to get the latest good videos published there.
+Around 2011, I was bored of visiting a blog to get the latest good videos published there.
 It felt repetitive to queue stuff and jump to YouTube to watch it.
 Years later, it has expanded to all my subscriptions and it's basically become my TV.
 It's something use to watch the news, as well as the latest and newest. 99% of it I'll never see again.

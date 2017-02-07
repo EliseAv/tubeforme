@@ -2,3 +2,4 @@ tendo
 PyYAML
 GitPython
 feedparser
+requests
