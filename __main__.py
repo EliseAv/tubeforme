@@ -20,8 +20,8 @@ from tendo.singleton import SingleInstance
 from yaml import load
 
 from .dedup import Deduplicator
-from .pull import YoutubeChannelVideoFeed, BlogVideoFeed
 from .platform import YoutubeDL, get_free_space_mb
+from .pull import YoutubeChannelVideoFeed, BlogVideoFeed
 
 BASEDIR = getcwd()
 log = getLogger(__name__)
@@ -31,26 +31,21 @@ def main():
     sentinel = SingleInstance()
     try:
         log.info('Starting. %d MB free.', get_free_space_mb(BASEDIR))
-        if 'skip' not in argv:
+
+        if 'nocheck' not in argv:
             try:
                 find_new_stuff()
+                deduplicate()
             except FileNotFoundError:
                 pass
 
-        try:
-            deduplicate()
-        except FileNotFoundError:
-            pass
+        if 'nodl' not in argv:
+            try:
+                download_found_stuff()
+                deduplicate()
+            except FileNotFoundError:
+                pass
 
-        try:
-            download_found_stuff()
-        except FileNotFoundError:
-            pass
-
-        try:
-            deduplicate()
-        except FileNotFoundError:
-            pass
     finally:
         del sentinel
 
