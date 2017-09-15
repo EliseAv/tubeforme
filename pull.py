@@ -14,9 +14,9 @@
 from json import dump, load
 from logging import getLogger
 from re import compile, MULTILINE
-from requests import get
 
 from feedparser import parse
+from requests import get
 
 log = getLogger(__name__)
 
@@ -49,7 +49,7 @@ class VideoFeed:
 
     def append_to_queue(self, queue_path):
         codes = self.fetch_video_codes()
-        links = ['\nhttp://www.youtube.com/watch?v=' + v for v in codes]
+        links = ['\nhttps://www.youtube.com/watch?v=' + v for v in codes]
         f = open(queue_path, 'a')
         f.writelines(links)
         f.close()
@@ -86,7 +86,7 @@ class YoutubeChannelVideoFeed(VideoFeed):
     def fetch_video_codes(self):
         for item in self.fetch():
             video = item.id[-11:]  # sometimes it can be this easy :)
-            log.info('Found video: http://youtu.be/%s', video)
+            log.info('Found video: https://youtu.be/%s', video)
             yield video
 
 
