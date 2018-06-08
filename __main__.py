@@ -72,7 +72,8 @@ def download_found_stuff():
     ydl_opts = {
         'writedescription': True,
         'noprogress': True,
-        # 'writesubtitles': True,
+        'writesubtitles': True,
+        'subtitleslang': 'en',
         'ignoreerrors': True,
         'outtmpl': join(download_path, '%(title)s %(uploader)s-%(id)s.%(ext)s'),
     }
