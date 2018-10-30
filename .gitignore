@@ -4,6 +4,7 @@ queue.txt*
 .idea
 *.yaml
 /platform/ydl
+/venv
 
 ### Python template
 # Byte-compiled / optimized / DLL files
