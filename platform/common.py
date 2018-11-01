@@ -26,7 +26,7 @@ def ensure_ydl():
 
     # Check if it exists
     if not exists(repo_path):
-        log.warn('Youtube-dl not found! Dowloading from %s', repository_url)
+        log.warning('Youtube-dl not found! Dowloading from %s', repository_url)
         Repo.clone_from(repository_url, repo_path)
 
     # Check if it's old
