@@ -1,4 +1,3 @@
-tendo
 PyYAML
 GitPython
 feedparser
