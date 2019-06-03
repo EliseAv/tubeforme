@@ -11,14 +11,14 @@
 # distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 #
-from json import dump, load
-from logging import getLogger
-from re import compile, MULTILINE
+import json
+import logging
+import re
 
-from feedparser import parse
-from requests import get
+import feedparser
+import requests
 
-log = getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 class VideoFeed:
@@ -31,7 +31,7 @@ class VideoFeed:
 
     def fetch(self):
         try:
-            feed = parse(self.url)
+            feed = feedparser.parse(self.url)
             items = feed.entries
             if len(items) == 0:
                 raise Exception("Empty feed. Is site down?")
@@ -41,7 +41,7 @@ class VideoFeed:
             for i in new_items:
                 yield i
             self.read_list.save()
-        except:
+        except Exception:
             log.exception("Unexpected error with %s", self.url, exc_info=True)
 
     def fetch_video_codes(self):
@@ -56,18 +56,18 @@ class VideoFeed:
 
 
 class BlogVideoFeed(VideoFeed):
-    re_youtube = compile(r"\b(v[=/]|embed/|youtu\.be/)([A-Za-z0-9_-]{11})(?![A-Za-z0-9_-])", MULTILINE)
+    re_youtube = re.compile(r"\b(v[=/]|embed/|youtu\.be/)([A-Za-z0-9_-]{11})(?![A-Za-z0-9_-])", re.MULTILINE)
 
     def fetch_pages(self):
         for i in self.fetch():
             try:
                 log.debug("%s, %s", i.id, i.link)
                 log.info("Fetching %s", i.title)
-                response = get(i.link)
+                response = requests.get(i.link)
                 html = response.text
                 log.debug("Read %d kibibytes." % (len(html) / 1024,))
                 yield html
-            except:
+            except Exception:
                 log.exception("Failed to fetch %s", i.id, exc_info=True)
             log.debug("")
 
@@ -98,9 +98,9 @@ class ReadList:  # this class is not thread-safe at all!
         if ReadList.lists is None:
             try:
                 f = open(filename)
-                ReadList.lists = load(f)
+                ReadList.lists = json.load(f)
                 f.close()
-            except:
+            except Exception:
                 ReadList.lists = {}
         # instance initialization
         self.key = key
@@ -116,5 +116,5 @@ class ReadList:  # this class is not thread-safe at all!
         ReadList.lists[self.key] = self.known = self.new
         self.new = []
         f = open(self.filename, "w")
-        dump(ReadList.lists, f, indent=4, sort_keys=True)
+        json.dump(ReadList.lists, f, indent=4, sort_keys=True)
         f.close()
