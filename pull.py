@@ -31,7 +31,9 @@ class VideoFeed:
 
     def fetch(self):
         try:
-            feed = feedparser.parse(self.url)
+            response = requests.get(self.url)
+            response.raise_for_status()
+            feed = feedparser.parse(response.content)
             items = feed.entries
             if len(items) == 0:
                 raise Exception("Empty feed. Is site down?")
