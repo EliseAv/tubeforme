@@ -34,59 +34,59 @@ class VideoFeed:
             feed = parse(self.url)
             items = feed.entries
             if len(items) == 0:
-                raise Exception('Empty feed. Is site down?')
+                raise Exception("Empty feed. Is site down?")
             new_items = list(filter(self.is_new, items))
-            log.info('Feed contains %d items, %d are new.' % (len(items), len(new_items)))
+            log.info("Feed contains %d items, %d are new." % (len(items), len(new_items)))
             # iterate first, then save new read list
             for i in new_items:
                 yield i
             self.read_list.save()
         except:
-            log.exception('Unexpected error with', self.url, exc_info=True)
+            log.exception("Unexpected error with %s", self.url, exc_info=True)
 
     def fetch_video_codes(self):
         raise NotImplementedError
 
     def append_to_queue(self, queue_path):
         codes = self.fetch_video_codes()
-        links = ['\nhttps://www.youtube.com/watch?v=' + v for v in codes]
-        f = open(queue_path, 'a')
+        links = ["\nhttps://www.youtube.com/watch?v=" + v for v in codes]
+        f = open(queue_path, "a")
         f.writelines(links)
         f.close()
 
 
 class BlogVideoFeed(VideoFeed):
-    re_youtube = compile('\\b(v[=/]|embed/|youtu\.be/)([A-Za-z0-9_-]{11})(?![A-Za-z0-9_-])', MULTILINE)
+    re_youtube = compile(r"\b(v[=/]|embed/|youtu\.be/)([A-Za-z0-9_-]{11})(?![A-Za-z0-9_-])", MULTILINE)
 
     def fetch_pages(self):
         for i in self.fetch():
             try:
-                log.debug('%s, %s', i.id, i.link)
-                log.info('Fetching %s', i.title)
+                log.debug("%s, %s", i.id, i.link)
+                log.info("Fetching %s", i.title)
                 response = get(i.link)
                 html = response.text
-                log.debug('Read %d kibibytes.' % (len(html) / 1024,))
+                log.debug("Read %d kibibytes." % (len(html) / 1024,))
                 yield html
             except:
-                log.exception('Failed to fetch %s', i.id, exc_info=True)
-            log.debug('')
+                log.exception("Failed to fetch %s", i.id, exc_info=True)
+            log.debug("")
 
     def fetch_video_codes(self):
         for html in self.fetch_pages():
             for match in self.re_youtube.finditer(html):
                 video = match.group(2)
-                log.debug('Found video: %s', video)
+                log.debug("Found video: %s", video)
                 yield video
 
 
 class YoutubeChannelVideoFeed(VideoFeed):
     def __init__(self, known_path, channel):
-        VideoFeed.__init__(self, known_path, 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channel)
+        VideoFeed.__init__(self, known_path, "https://www.youtube.com/feeds/videos.xml?channel_id=" + channel)
 
     def fetch_video_codes(self):
         for item in self.fetch():
             video = item.id[-11:]  # sometimes it can be this easy :)
-            log.info('Found video: https://youtu.be/%s', video)
+            log.info("Found video: https://youtu.be/%s", video)
             yield video
 
 
@@ -115,6 +115,6 @@ class ReadList:  # this class is not thread-safe at all!
     def save(self):
         ReadList.lists[self.key] = self.known = self.new
         self.new = []
-        f = open(self.filename, 'w')
+        f = open(self.filename, "w")
         dump(ReadList.lists, f, indent=4, sort_keys=True)
         f.close()

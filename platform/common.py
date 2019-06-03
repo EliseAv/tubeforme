@@ -17,20 +17,20 @@ from os.path import exists, dirname, join
 from git import Repo
 
 log = getLogger(__name__)
-repository_url = 'https://github.com/rg3/youtube-dl.git'
+repository_url = "https://github.com/rg3/youtube-dl.git"
 
 
 def ensure_ydl():
     base_path = dirname(__file__)
-    repo_path = join(base_path, 'ydl')
+    repo_path = join(base_path, "ydl")
 
     # Check if it exists
     if not exists(repo_path):
-        log.warning('Youtube-dl not found! Dowloading from %s', repository_url)
+        log.warning("Youtube-dl not found! Dowloading from %s", repository_url)
         Repo.clone_from(repository_url, repo_path)
 
     # Check if it's old
     else:
         remote = Repo(repo_path).remote()
-        log.info('Updating from %s', remote.name)
+        log.info("Updating from %s", remote.name)
         remote.pull()
