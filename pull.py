@@ -14,6 +14,7 @@
 import json
 import logging
 import re
+import tempfile
 
 import feedparser
 import requests
@@ -78,6 +79,10 @@ class BlogVideoFeed(VideoFeed):
             for match in self.re_youtube.finditer(html):
                 video = match.group(2)
                 log.debug("Found video: %s", video)
+                if video == "videoseries":
+                    with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False) as file:
+                        file.write(html)
+                    raise ValueError("URL PARSE ERROR, please check " + file.name)
                 yield video
 
 
