@@ -20,7 +20,8 @@ from yaml import load
 
 from .dedup import Deduplicator
 from .platform import YoutubeDL, get_free_space_mb
-from .pull import YoutubeChannelVideoFeed, BlogVideoFeed
+from .video_feeds.blog import BlogVideoFeed
+from .video_feeds.yt_channel import YoutubeChannelVideoFeed
 
 BASEDIR = getcwd()
 log = getLogger(__name__)
