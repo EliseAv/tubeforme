@@ -33,12 +33,12 @@ def main():
     if "nocheck" not in argv:
         try:
             find_new_stuff()
-            deduplicate()
         except FileNotFoundError:
             pass
 
     if "nodl" not in argv:
         try:
+            deduplicate()
             download_found_stuff()
             deduplicate()
         except FileNotFoundError:
