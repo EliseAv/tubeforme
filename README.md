@@ -6,7 +6,12 @@ It felt repetitive to queue stuff and jump to YouTube to watch it.
 Years later, it has expanded to all my subscriptions and it's basically become my TV.
 It's something use to watch the news, as well as the latest and newest. 99% of it I'll never see again.
 
-I originally made it for my own use only, but if more people use it I can make it easier to use.
+No longer maintained
+--------------------
+
+As of Firefox 72, released in 2020, which launched
+[Picture-in-Picture video](https://support.mozilla.org/en-US/kb/about-picture-picture-firefox),
+this project became irrelevant to me. Feel free to take it to a loving home.
 
 Installation
 ------------
