@@ -1,6 +1,9 @@
 tubeforme
 =========
 
+Script that looks for Youtube links in RSS feeds and downloads the videos in new articles.
+Works great with VLC Media Player.
+
 Around 2011, I was bored of visiting a blog to get the latest good videos published there.
 It felt repetitive to queue stuff and jump to YouTube to watch it.
 Years later, it has expanded to all my subscriptions and it's basically become my TV.
